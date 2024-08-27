@@ -262,7 +262,6 @@ ALTER TABLE simuldialog ADD CONSTRAINT FK_simulationnum FOREIGN KEY (simulationn
 ALTER TABLE simulresult ADD CONSTRAINT FK_simulresult_simulationnum FOREIGN KEY (simulationnum) REFERENCES simulation(num) ON DELETE CASCADE;
 ALTER TABLE marketqnaquestion ADD CONSTRAINT fk_membernum_mq FOREIGN KEY (membernum) REFERENCES member(num);
 
-
 CREATE SEQUENCE member_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE qnaquestion_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE qnaanswer_seq START WITH 1 INCREMENT BY 1;
@@ -285,6 +284,7 @@ CREATE SEQUENCE payment_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE marketqnaquestion_seq START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE marketqnaanswer_seq START WITH 1 INCREMENT BY 1;
 
+
 CREATE OR REPLACE TRIGGER trg_diary_to_result
 AFTER INSERT OR UPDATE ON DIARY
 FOR EACH ROW
@@ -306,11 +306,11 @@ BEGIN
     );
 END;
 /
-COMMIT;
-ALTER TABLE result MODIFY TESTVIDEOTEXT VARCHAR2(500);
 
 INSERT INTO COMMUNITY(num,membernum,name,people,favorite,communitydate) VALUES(community_seq.NEXTVAL,1,'마음의 치유가 필요한 사람',1400,300,TO_DATE('2020-02-21','YYYY-MM-DD'));
 INSERT INTO COMMUNITY(num,membernum,name,people,favorite,communitydate) VALUES(community_seq.NEXTVAL,2,'편히 얘기할 곳',1500,400,TO_DATE('2024-05-21','YYYY-MM-DD'));
 INSERT INTO COMMUNITY(num,membernum,name,people,favorite,communitydate) VALUES(community_seq.NEXTVAL,3,'충전하는 시간',1600,500,TO_DATE('2024-05-25','YYYY-MM-DD'));
 INSERT INTO COMMUNITY(num,membernum,name,people,favorite,communitydate) VALUES(community_seq.NEXTVAL,4,'울적할 때 와요',1700,600,TO_DATE('2024-03-07','YYYY-MM-DD'));
 INSERT INTO COMMUNITY(num,membernum,name,people,favorite,communitydate) VALUES(community_seq.NEXTVAL,5,'재미있는 사람들',1800,700,TO_DATE('2024-02-21','YYYY-MM-DD'));
+
+COMMIT;
