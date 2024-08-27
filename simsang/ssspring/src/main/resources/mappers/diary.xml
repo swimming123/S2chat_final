@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.DiaryDao">
+
+  <insert id="diaryAdd" parameterType="diaryvo">
+    INSERT INTO diary(num, membernum, emotion, week, title, content, diarydate, diaryupdate, diaryimg) 
+    VALUES (diary_seq.NEXTVAL, #{membernum}, #{emotion}, #{week}, #{title}, #{content}, sysdate, NULL, #{diaryimg})
+  </insert>
+
+  <select id="diaryList" resultType="diaryvo" parameterType="int">
+    SELECT num, membernum, emotion, week, title, content, diarydate, diaryupdate, diaryimg 
+    FROM diary where membernum=#{membernum}
+  </select>
+
+  <select id="diaryDetail" parameterType="int" resultType="diaryvo">
+    SELECT * FROM diary WHERE num = #{num}
+  </select>
+
+  <delete id="diaryDelete" parameterType="int">
+    DELETE FROM diary WHERE num = #{num}
+  </delete>
+
+  <update id="diaryUpdate" parameterType="diaryvo">
+    UPDATE diary
+    SET membernum = #{membernum},
+        emotion = #{emotion},
+        week = #{week},
+        title = #{title},
+        content = #{content},
+        diarydate = (SELECT diarydate FROM diary WHERE num = #{num}),
+        diaryupdate = sysdate,
+        diaryimg = #{diaryimg}
+    WHERE num = #{num}
+  </update>
+
+</mapper>

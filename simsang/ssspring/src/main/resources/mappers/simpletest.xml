@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.ict.finalproject.dao.SimpletestDAO">
+    <select id="getQuestion" resultType="simpletestvo"> SELECT num, question FROM questionnaire </select>
+
+    <insert id="insertResponse" parameterType="userresponsevo"> INSERT INTO useresponse (id, userid,
+        surveycode, qnum, respscore, respdate) VALUES (useresponse_seq.NEXTVAL, #{userid},
+        #{surveycode}, #{qnum}, #{respscore}, TO_CHAR(sysdate,'RR/MM/DD')) </insert>
+
+    <!-- 유저 전체 답변 받아오기 : 아이디, 값1만 가져오기 -->
+    <select id="getRespDetail" resultType="userresponsevo" parameterType="string"> SELECT u.userid,
+        u.qnum, u.RESPSCORE, q.CAUSE, q.DESCRIPTION FROM USERESPONSE u JOIN questionnaire q ON
+        (u.qnum = q.num) WHERE u.userid = #{userid} AND u.RESPSCORE = 1 </select>
+
+    <!-- 유저 답변 총합 받아오기 -->
+    <select id="getRespTotal" parameterType="String" resultType="map"> SELECT SUM(u.RESPSCORE) FROM
+        USERESPONSE u JOIN questionnaire q ON (u.qnum = q.num) WHERE u.userid = #{userid} AND u.respdate = #{respdate}
+        </select>
+
+    <!-- 차트 데이터 받아오기 -->
+    <select id="getUserResponses" resultType="map" parameterType="String">
+        SELECT 'CAUSE' as type, q.CAUSE as name, COUNT(*) as count
+        FROM USERESPONSE u
+        JOIN questionnaire q ON (u.qnum = q.num)
+        WHERE u.USERID = #{userid} AND u.RESPSCORE = 1
+        GROUP BY q.CAUSE
+        HAVING COUNT(*) > 1
+        UNION ALL
+        SELECT 'DESCRIPTION' as type, q.DESCRIPTION as name, COUNT(*) as count
+        FROM USERESPONSE u
+        JOIN questionnaire q ON (u.qnum = q.num)
+        WHERE u.USERID = #{userid} AND u.RESPSCORE = 1
+        GROUP BY q.DESCRIPTION
+        HAVING COUNT(*) > 1
+        UNION ALL
+        SELECT 'TOTAL' as type, NULL as name, SUM(u.RESPSCORE) as count
+        FROM USERESPONSE u
+        JOIN questionnaire q ON (u.qnum = q.num)
+        WHERE u.USERID = #{userid} AND u.RESPSCORE = 1
+    </select>
+</mapper>

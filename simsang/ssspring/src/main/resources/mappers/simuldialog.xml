@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.ict.finalproject.dao.SimuldialogDAO">
+
+    <select id="findAll" resultType="simuldialogvo">
+        SELECT * FROM simuldialog ORDER BY num DESC
+    </select>
+
+    <select id="findByStatusAndSimulationnum" parameterType="map" resultType="simuldialogvo">
+        SELECT * FROM simuldialog WHERE status = #{status} and simulationnum = #{simulationnum}
+    </select>
+
+    <insert id="insertSimuldialog" parameterType="simuldialogvo">
+        INSERT INTO simuldialog (num, simulationnum, conversation, status) 
+        VALUES (simuldialog_seq.NEXTVAL, #{simulationnum}, #{conversation}, #{status})
+    </insert>
+
+    <delete id="deleteSimuldialog" parameterType="Long">
+        DELETE FROM simuldialog WHERE num = #{num}
+    </delete>
+
+</mapper>

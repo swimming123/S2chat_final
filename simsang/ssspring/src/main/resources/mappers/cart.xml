@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.CartDAO">
+
+    <insert id="cartadd" parameterType="cartvo">
+        INSERT INTO cart(membernum, productnum,count,cdate)
+        VALUES (#{membernum}, #{productnum}, #{count}, sysdate)
+      </insert>
+      
+    <select id="cartlist" resultType="cartvo">
+        SELECT * FROM Cart WHERE membernum = #{membernum}
+    </select>
+    
+    <select id="cartorderlist" resultType="cartvo">
+      SELECT * FROM Cart WHERE membernum = #{membernum} AND productnum = #{productnum}
+    </select>
+
+      <update id="cartupdate">
+        UPDATE cart
+        SET count = count + #{count}
+        where membernum = #{membernum} AND productnum = #{productnum}
+    </update>
+
+    <delete id="cartdelete">
+        delete from cart where membernum = #{membernum} AND productnum = #{productnum}
+      </delete>
+
+</mapper>

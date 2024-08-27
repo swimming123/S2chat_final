@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.AddressDAO">
+
+    <insert id="addressadd" parameterType="addressvo">
+        INSERT INTO address(num,membernum,addressnick, address,detailaddress,addrequest)
+        VALUES (address_seq.nextval,#{membernum}, #{addressnick}, #{address}, #{detailaddress}, #{addrequest})
+      </insert>
+
+    <select id="addresslist" resultType="addressvo">
+        SELECT * FROM address WHERE membernum = #{membernum}
+    </select>
+
+    <select id="addressdetail" resultType="addressvo">
+      SELECT * FROM address WHERE num = #{addressnum}
+  </select>
+
+      <update id="addressupdate" parameterType="addressvo">
+        UPDATE address
+        SET addressnick=#{addressnick},address = #{address},detailaddress = #{detailaddress},addrequest = #{addrequest}
+        where membernum = #{membernum} AND num = #{num}
+    </update>
+
+    <delete id="addressdelete">
+        delete from address where num = #{num}
+      </delete>
+      
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.OrderDAO">
+  <insert id="orderadd" parameterType="ordervo">
+    INSERT INTO orders(ordernum,requestnum, membernum,productnum,name,count,price,odate,img,delivery)
+    VALUES (ordernum_seq.nextval,#{requestnum},#{membernum}, #{productnum}, #{name}, #{count}, #{price}, sysdate,#{img},#{delivery})
+  </insert>
+
+  <select id="orderlist" resultType="ordervo">
+    SELECT * FROM orders WHERE requestnum = #{requestnum}
+  </select>
+
+  <select id="memlist" resultType="ordervo">
+    SELECT * FROM orders WHERE membernum = #{membernum} AND (delivery = '취소' OR delivery = '환불')
+  </select>
+
+  <update id="orderupdate">
+    UPDATE orders
+    SET count = #{count}
+    where requestnum = #{requestnum} AND productnum = #{productnum}
+  </update>
+
+  <update id="ordercancel">
+    UPDATE orders
+    SET delivery = #{delivery}
+    where membernum = #{membernum} AND requestnum = #{requestnum}
+  </update>
+
+  <delete id="orderdelete">
+    delete from orders where requestnum = #{requestnum} AND productnum = #{productnum}
+  </delete>
+
+  <select id="ordersearch" resultType="ordervo">
+    SELECT * FROM orders 
+    WHERE membernum = #{membernum} 
+    AND name LIKE '%' || #{content} || '%'
+  </select>
+  
+</mapper>

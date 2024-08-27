@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.ict.finalproject.dao.ReviewDAO">
+
+  <insert id="insertReview" parameterType="reviewvo"> 
+    INSERT INTO review (review_num, member_num, review_content, review_productnum,review_stars, review_date, review_imagename, review_category)
+    VALUES (#{review_num}, #{member_num}, #{review_content},#{review_productnum}, #{review_stars}, SYSDATE, #{review_imagename}, #{review_category}) 
+  </insert>
+
+  <select id="selectAllReview" resultType="reviewvo"> 
+    SELECT * FROM review ORDER BY review_num DESC 
+  </select>
+
+  <select id="selectProductnum" resultType="reviewvo"> 
+    SELECT * FROM review where review_productnum = #{productnum} ORDER BY review_num DESC
+  </select>
+
+  <select id="selectReviewById" parameterType="long" resultType="reviewvo"> 
+    SELECT * FROM review WHERE review_num = #{review_num} 
+  </select>
+
+  <update id="updateReview" parameterType="reviewvo"> 
+    UPDATE review 
+    SET review_content = #{review_content}, review_stars = #{review_stars}, review_date = SYSDATE, review_imagename = #{review_imagename}, review_category = #{review_category} 
+    WHERE review_num = #{review_num} 
+  </update>
+
+  <delete id="deleteReview" parameterType="long"> 
+    DELETE FROM review WHERE review_num = #{review_num} 
+  </delete>
+
+  <select id="totalCount" resultType="int"> 
+    select count(*) cnt from review 
+  </select>
+
+  <select id="findAll" resultType="reviewvo"> 
+    SELECT * FROM review 
+  </select>
+
+  <select id="findAllByOrderByReviewnumDesc" resultType="reviewvo"> 
+    SELECT * FROM review ORDER BY review_num DESC 
+  </select>
+
+</mapper>

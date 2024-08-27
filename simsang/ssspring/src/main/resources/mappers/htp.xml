@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="kr.co.ict.finalproject.dao.HtpDao">
+
+    <insert id="htpadd" parameterType="htpvo">
+        INSERT INTO htp (
+        htpnum, id, htpimg, roof, wall, door, windows, chimney, smoke, road, house, grass, tree, pond, fence, sun, mountain, flower, htpdate
+        ) VALUES (
+        htp_seq.NEXTVAL, #{id}, #{htpimg},#{roof}, #{wall}, #{door}, #{windows}, #{chimney}, #{smoke},#{road},#{house}, #{grass}, #{tree}, #{pond}, #{fence}, #{sun}, #{mountain}, #{flower}, SYSDATE
+        )
+    </insert>
+
+    <select id="htplist" resultType="htpvo">
+    SELECT htpnum, id, htpimg, roof, wall, door, windows, chimney, smoke, road, house, grass, tree, pond, fence, sun, mountain, flower, htpdate FROM HTP
+    </select>
+
+    <delete id="htpDelete" parameterType="int">
+        DELETE FROM htp WHERE htpnum = #{num}
+    </delete>
+    
+</mapper>

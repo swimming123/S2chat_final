@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.ict.finalproject.dao.SimulationDAO">
+    <select id="findAll" resultType="simulationvo"> SELECT * FROM simulation ORDER BY num DESC </select>
+
+    <insert id="insertSimulation" parameterType="simulationvo">
+        <selectKey keyProperty="num" resultType="long" order="AFTER"> SELECT simulation_seq.CURRVAL
+        FROM dual </selectKey> INSERT INTO simulation (num, membernum, category, type, simuldate,
+        title) VALUES (simulation_seq.NEXTVAL, #{membernum}, #{category}, #{type}, sysdate,
+        #{title}) </insert>
+
+    <delete id="deleteSimulation" parameterType="Long"> DELETE FROM simulation WHERE num = #{num} </delete>
+
+    <!-- 시뮬레이션과 연관된 시뮬대화 내용을 함께 조회 -->
+    <select id="findSimulationWithDialog" resultMap="simulationWithDialog"> SELECT s.num AS
+        simulationNum, s.membernum, s.category, s.type, s.simuldate, s.title, d.num AS dialogNum,
+        d.conversation, d.status FROM simulation s LEFT JOIN simuldialog d ON s.num =
+        d.simulationnum </select>
+
+    <!-- ResultMap 정의 -->
+    <resultMap id="simulationWithDialog" type="simulationvo">
+        <id property="num" column="num" />
+        <result property="membernum" column="membernum" />
+        <result property="category" column="category" />
+        <result property="type" column="type" />
+        <result property="simuldate" column="simuldate" />
+        <result property="title" column="title" />
+        <!-- 시뮬대화 리스트를 설정하는 부분 -->
+        <collection property="dialogs" ofType="simuldialogvo">
+            <result property="num" column="dialogNum" />
+            <result property="simulationnum" column="simulationnum" />
+            <result property="conversation" column="conversation" />
+            <result property="status" column="status" />
+        </collection>
+    </resultMap>
+
+    <!--  시뮬레이션과 연관된 시뮬대화 내용을 함께 조회  -->
+    <select id="findSimulationWithResult" resultMap="simulationWithResult"> SELECT s.num AS
+        simulationNum, s.membernum, s.category, s.type, s.simuldate, s.title, r.num AS resultNum,
+        r.simulationnum, r.emotionname, r.emotionscore, r.stressscore, r.heartrate, r.topemotion,
+        r.topemotionscore, r.topemotionimg, r.evaluation FROM simulation s LEFT JOIN simulresult r ON s.num =
+        r.simulationnum </select>
+    <!--  ResultMap 정의  -->
+    <resultMap id="simulationWithResult" type="simulationvo">
+        <id property="num" column="num" />
+        <result property="membernum" column="membernum" />
+        <result property="category" column="category" />
+        <result property="type" column="type" />
+        <result property="simuldate" column="simuldate" />
+        <result property="title" column="title" />
+        <!--  시뮬대화 리스트를 설정하는 부분  -->
+        <collection property="results" ofType="simulresultvo">
+            <result property="num" column="resultNum" />
+            <result property="simulationnum" column="simulationnum" />
+            <result property="emotionname" column="emotionname" />
+            <result property="emotionscore" column="emotionscore" />
+            <result property="stressscore" column="stressscore" />
+            <result property="heartrate" column="heartrate" />
+            <result property="topemotion" column="topemotion" />
+            <result property="topemotionscore" column="topemotionscore" />
+            <result property="topemotionimg" column="topemotionimg" />
+            <result property="evaluation" column="evaluation" />
+        </collection>
+    </resultMap>
+</mapper>

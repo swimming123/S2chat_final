@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.RequestDAO">
+
+    <insert id="requestadd" parameterType="requestvo">
+        insert into request(membernum, requestnum, address, detailaddress, addrequest, way,waycorp,waynum,rdate)
+        values (#{membernum}, #{requestnum}, #{address},#{detailaddress},#{addrequest},#{way},#{waycorp},#{waynum},sysdate)
+      </insert>
+
+      <select id="requestlist" resultType="requestvo">
+        select * from request WHERE membernum = #{membernum}
+      </select>
+
+      <update id="requestupdate" parameterType="requestvo">
+        UPDATE request
+        SET address = #{address},
+        detailaddress = #{detailaddress},
+        addreqeust = #{addreqeust},
+        WHERE requestnum = #{requestnum} AND membernum = #{membernum}
+    </update>
+
+    <delete id="requestdelete">
+        delete from request where requestnum=#{requestnum}
+      </delete>
+      
+</mapper>

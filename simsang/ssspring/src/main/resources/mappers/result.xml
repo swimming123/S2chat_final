@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.ResultDao">
+
+    <select id="listResult" resultType="result">
+        select * from result
+      </select>
+
+    <resultMap id="resultWithEmotionMap" type="java.util.HashMap">
+    <id property="membernum" column="membernum" />
+    <result property="testDay" column="test_day" />
+    <result property="testCount" column="test_count" />
+    <result property="emotionName" column="emotion_name" />
+    <result property="emotionCount" column="emotion_count" />
+    </resultMap>
+
+    <select id="weekCount" resultMap="resultWithEmotionMap">
+        SELECT
+            r.membernum,
+            TO_CHAR(r.testdate, 'DAY') AS test_day,
+            COUNT(r.num) AS test_count,
+            e.name AS emotion_name,
+            COUNT(e.num) AS emotion_count
+        FROM
+            result r
+        JOIN
+            emotion e ON r.num = e.resultnum
+        WHERE
+            r.membernum = #{membernum}
+        GROUP BY
+            r.membernum,
+            TO_CHAR(r.testdate, 'DAY'),
+            e.name
+        ORDER BY
+            r.membernum,
+            test_day,
+            e.name;
+    </select>
+
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.MemberDAO">
+  <select id="memberlist" resultType="membervo">
+      select id,num,name,email,phone,nick
+      from member
+    </select>
+
+  <select id="memberDetail" parameterType="int" resultType="membervo">
+    select num, id, pwd, name, nick, email, telephone, 
+            imgn, birth, gender, date, address, detailaddress, 
+            filepath, reip 
+    from member 
+    where num=#{num}
+  </select>
+
+  <insert id="memberAdd" parameterType="membervo">
+    insert into member(num, id, pwd, nick, email, tel,address,detailaddress, mdate,
+                        name,  age, gender, imgn)
+    values (member_seq.nextval, #{id}, #{pwd},#{nick},#{email},#{tel},#{address},#{detailaddress},sysdate,
+            #{name},#{age},#{gender},#{imgn})
+  </insert>
+
+  <delete id="memberDelete" parameterType="int">
+    delete from member where num=#{num}
+  </delete>
+
+  <update id="memberUpdate" parameterType="membervo">
+    UPDATE member
+    SET pwd = #{pwd},
+        name = #{name},
+        nickname = #{nickname},
+        email = #{email},
+        telephone = #{telephone},
+        imgn = #{imgn},
+        address = #{address},
+        birth = #{birth},
+        gender = #{gender},
+        detailaddress = #{detailaddress},
+        filepath = #{filepath},
+        reip = #{reip}
+    WHERE id = #{id}
+  </update>
+
+  <select id="idCheck" parameterType="String">
+    select count(*) from member WHERE id = #{id}
+  </select>
+
+  <select id="emailCheck" parameterType="String">
+    select count(*) from member WHERE email = #{email}
+  </select>
+
+  <select id="nameEmailCheck">
+    select count(*) from member WHERE name = #{name} and email = #{email}
+  </select>
+
+  <select id="idEmailCheck">
+    select count(*) from member WHERE id = #{id} and email = #{email}
+  </select>
+
+  <select id="checkidpwd">
+    select count(*) from member WHERE id = #{id} and pwd = #{pwd}
+  </select>
+
+
+  <select  id="findid" resultType="membervo">
+    SELECT *
+    FROM member 
+    WHERE name = #{name}
+    AND email = #{email}
+  </select>
+
+  <update id="pwdUpdate">
+    UPDATE member 
+    SET pwd = #{authCode}
+    WHERE id = #{id}
+    and email = #{email}
+  </update>
+  <select id="getMemberById" parameterType="String" resultType="MemberVO">
+    SELECT * FROM member WHERE id = #{id}
+  </select>
+</mapper>

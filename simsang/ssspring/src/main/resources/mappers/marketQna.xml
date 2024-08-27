@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.MarketQnaDAO">
+
+  <insert id="add" parameterType="marketqna"> INSERT INTO marketqnaquestion (num, membernum, name,
+    qnaquestiondate, category, title, content, imgname, status) VALUES
+    (marketqnaquestion_seq.nextval, #{membernum}, #{name}, sysdate, #{category}, #{title},
+    #{content}, #{imgname}, #{status}) </insert>
+
+
+  <delete id="delete" parameterType="int"> delete from marketqnaquestion where num=#{num} </delete>
+
+  <update id="update" parameterType="marketqna"> update marketqnaquestion set title = #{title},
+    content = #{content}, name = #{name}, imgname = #{imgname}, category = #{category} where
+    num=#{num} </update>
+
+  <select id="list" resultType="marketqna"> SELECT q.num, q.membernum, q.name,
+    TO_CHAR(q.qnaquestiondate, 'YYYY-MM-DD') AS qnaquestiondate, q.category, q.title, q.content,
+    q.imgname, q.status, m.name AS member_name FROM marketqnaquestion q JOIN member m ON q.membernum
+    = m.num ORDER BY q.num DESC </select>
+
+  <select id="detail" parameterType="int" resultType="marketqna"> SELECT q.num, q.membernum, q.name,
+    TO_CHAR(q.qnaquestiondate, 'YYYY-MM-DD') AS qnaquestiondate, q.category, q.title, q.content,
+    q.imgname, q.status, m.name AS member_name FROM marketqnaquestion q LEFT JOIN member m ON
+    q.membernum = m.num WHERE q.num = #{num} </select>
+
+</mapper>

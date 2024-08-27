@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.PaymentDAO">
+  
+  <insert id="payadd" parameterType="payvo">
+    INSERT INTO payment(num, membernum, paynick, payway, paycorp, paynum, payday, paycvc, cdate)
+    VALUES (payment_seq.nextval, #{membernum}, #{paynick}, #{payway}, #{paycorp}, #{paynum}, #{payday}, #{paycvc}, sysdate)
+</insert>
+
+  <select id="paylist" resultType="payvo">
+    SELECT * FROM payment WHERE membernum = #{membernum}
+  </select>
+
+  <select id="paydetail" resultType="payvo">
+  SELECT * FROM payment WHERE num = #{paymentnum}
+  </select>
+
+  <update id="payupdate" parameterType="payvo">
+    UPDATE payment
+    SET paynick = #{paynick},payway = #{payway},paycorp = #{paycorp}, paynum = #{paynum},payday= #{payday},paycvc= #{paycvc}
+    where membernum = #{membernum} AND num = #{num}
+  </update>
+
+  <delete id="paydelete">
+    delete from payment where num = #{num}
+  </delete>
+
+</mapper>

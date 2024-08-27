@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="kr.co.ict.finalproject.dao.QnaDAO">
+
+  <insert id="add" parameterType="qna">
+    INSERT INTO qnaquestion (num, membernum, name, qnaquestiondate, category, title, content, imgname, status)
+    VALUES (qnaquestion_seq.nextval, #{membernum}, #{name}, #{qnaquestiondate}, #{category}, #{title}, #{content}, #{imgname}, #{status})
+  </insert>
+
+  <select id="list" parameterType="qna">
+    SELECT q.num, q.membernum, q.name, TO_CHAR(q.qnaquestiondate, 'YYYY-MM-DD') AS qnaquestiondate, q.category, q.title, q.content, q.imgname, q.status
+    FROM qnaquestion q
+    INNER JOIN member m ON q.membernum = m.num
+    where q.membernum = m.num and membernum = #{membernum}
+    ORDER BY q.num DESC
+  </select>
+
+  <select id="detail" parameterType="qna">
+    SELECT q.num, q.membernum, q.name, TO_CHAR(q.qnaquestiondate, 'YYYY-MM-DD') AS qnaquestiondate, q.category, q.title, q.content, q.imgname, q.status, m.name AS member_name
+    FROM qnaquestion q
+    LEFT JOIN member m ON q.membernum = m.num
+    WHERE q.num = #{num}
+  </select>
+
+  <delete id="delete" parameterType="int">
+    delete from qnaquestion where num=#{num}
+  </delete>
+
+  <update id="update" parameterType="qna">
+    update qnaquestion 
+    set 
+    title =#{title},
+    content =#{content},
+    name =#{name},
+    category =#{category},
+    imgname =#{imgname}
+    where num=#{num}
+  </update>
+
+</mapper>

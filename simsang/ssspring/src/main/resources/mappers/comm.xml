@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="kr.co.ict.finalproject.dao.CommDAO">
+
+      <select id="list" parameterType="comm">
+        SELECT c.num, c.membernum, c.name, c.people, c.favorite, TO_CHAR(c.communitydate, 'YYYY-MM-DD') AS communitydate, m.name AS member_name
+        FROM community c
+        JOIN member m ON c.membernum = m.num
+        where c.membernum = m.num
+        ORDER BY c.num asc
+      </select>
+      
+    </mapper>

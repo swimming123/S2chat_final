@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ict.finalproject.dao.EmotionDao">
+
+    <select id="listEmotion" parameterType="int" resultType="emotionvo"> 
+        SELECT membernum, name, COUNT(*) AS count FROM emotion 
+        WHERE membernum = #{membernum} GROUP BY membernum, name 
+    </select>
+
+    <select id="weekEmotion" parameterType="int" resultType="emotionvo"> 
+        WITH WeekdayCounts AS (
+            SELECT membernum, TO_CHAR(emotiondate, 'FMDay', 'NLS_DATE_LANGUAGE=KOREAN'
+            ) AS weekday, COUNT(*) AS weekdaycount 
+        FROM emotion 
+        WHERE membernum = #{membernum} 
+        GROUP BY membernum,TO_CHAR(emotiondate, 'FMDay', 'NLS_DATE_LANGUAGE=KOREAN') ), EmotionCounts AS ( 
+            SELECT membernum, TO_CHAR(emotiondate, 'FMDay', 'NLS_DATE_LANGUAGE=KOREAN') AS weekday, 
+            name,
+            COUNT(*) AS count 
+        FROM emotion 
+        WHERE membernum = #{membernum} 
+        GROUP BY membernum,
+            TO_CHAR(emotiondate, 'FMDay', 'NLS_DATE_LANGUAGE=KOREAN'), name ) 
+            SELECT wc.membernum, wc.weekday, wc.weekdaycount, ec.name, ec.count 
+            FROM WeekdayCounts wc 
+            LEFT JOIN EmotionCounts ec ON wc.membernum = ec.membernum AND wc.weekday = ec.weekday 
+            ORDER BY wc.membernum, wc.weekday, ec.name 
+    </select>
+
+    <select id="monthEmotion" parameterType="int" resultType="emotionvo"> 
+        SELECT membernum, TO_CHAR(emotiondate, 'MM') AS month, name, COUNT(*) AS count 
+        FROM emotion 
+        WHERE membernum = #{membernum} 
+        GROUP BY membernum, TO_CHAR(emotiondate, 'MM'), name ORDER BY membernum, month, name 
+    </select>
+
+    <select id="happydays" parameterType="int" resultType="java.lang.Integer"> 
+        WITH HappinessRanked AS ( 
+            SELECT EMOTIONDATE, ROW_NUMBER() OVER (
+                PARTITION BY MEMBERNUM ORDER BY EMOTIONDATE DESC) AS rn 
+                FROM emotion 
+                WHERE NAME = '행복' AND MEMBERNUM = #{membernum} 
+            ) SELECT (
+                SELECT EMOTIONDATE FROM HappinessRanked WHERE rn = 1) - (
+                    SELECT EMOTIONDATE FROM HappinessRanked WHERE rn = 2) AS happyday FROM DUAL 
+    </select>
+
+    <select id="bubbleemotion" parameterType="int" resultType="emotionvo"> 
+        SELECT membernum, name AS emotion, AVG(score) AS scoreaverage, COUNT(*) AS count 
+        FROM emotion 
+        WHERE membernum = #{membernum} 
+        GROUP BY membernum, name 
+    </select>
+
+</mapper>
