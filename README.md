@@ -43,8 +43,8 @@ Software
   - google-cloud-storge
  
 ## Data 출처
-- 감정이 태깅된 자유대화 (성인)
-- https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=&topMenu=&aihubDataSe=data&dataSetSn=71631
-- 감정이 태깅된 자유대화 (청소년)
-- https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=&topMenu=&aihubDataSe=data&dataSetSn=71632
+- 한국인 감정인식을 위한 복합 영상
+- [https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=&topMenu=&aihubDataSe=data&dataSetSn=71631](https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=&topMenu=&aihubDataSe=data&dataSetSn=82)
+- 감정 분류를 위한 대화 음성 데이터셋
+- [https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=&topMenu=&aihubDataSe=data&dataSetSn=71632](https://aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&dataSetSn=263)
 
